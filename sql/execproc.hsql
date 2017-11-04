@@ -1,0 +1,41 @@
+CALL AddNewAdmin("UserName", "Админ", "Адменович", "111111", "admin@mail.ru");
+
+CALL AddNewSection("Электроника");
+CALL AddNewSection("Бытовая техника");
+CALL AddNewSection("Обувь, одежда");
+CALL AddNewSection("Детям");
+CALL AddNewSection("Аптека");
+CALL AddNewSection("Цифровые товары");
+
+CALL AddNewCategory("Мобильные телефоны", 1);
+CALL AddNewCategory("Игры", 6);
+CALL AddNewCategory("Игрушки", 4);
+CALL AddNewCategory("Спортивная одежда", 3);
+CALL AddNewCategory("Спортивная обувт", 3);
+CALL AddNewCategory("Офисные программы", 6);
+CALL AddNewCategory("Компьютеры", 1);
+CALL AddNewCategory("Ноутбуки", 1);
+CALL AddNewCategory("Стиральные машинки", 2);
+CALL AddNewCategory("Утюги", 2);
+CALL AddNewCategory("Холодильники", 2);
+CALL AddNewCategory("Детские книги", 4);
+
+CALL AddNewBrand("Apple", "Apple - американская корпорация, производитель персональных и планшетных компьютеров, аудиоплееров, телефонов, программного обеспечения.");
+CALL AddNewBrand("Samsumg", "Samsung Group - южнокорейская группа компаний, один из крупнейших чеболей, основанный в 1938 году.");
+CALL AddNewBrand("Microsoft", "Май­кро­софт кор­по­рейшн (анг. Microsoft Corporation, как правило, именуется просто Microsoft; распространено сокращение MS) - одна из крупнейших транснациональных компаний по производству проприетарного программного обеспечения для различного рода вычислительной техники — персональных компьютеров, игровых приставок, КПК, мобильных телефонов и прочего, разработчик наиболее широко распространённой на данный момент в мире программной платформы - семейства операционных систем Windows.");
+CALL AddNewBrand("Nvidia", "NVIDIA Corporation - американская компания, один из крупнейших разработчиков графических ускорителей и процессоров, а также наборов системной логики.");
+CALL AddNewBrand("Intel", "И́нтел - производитель электронных устройств и компьютерных компонентов, включая микропроцессоры, наборы системной логики. Штаб-квартира расположена в Санта-Кларе, штат Калифорния.");
+CALL AddNewBrand("AMD", "Advanced Micro Devices, Inc. - производитель интегральной микросхемной электроники.");
+CALL AddNewBrand("Toshiba", "Toshiba Corporation - крупная транснациональная корпорация со штаб-квартирой в Токио, Япония.");
+CALL AddNewBrand("Nissan", "Nissan Motor Co., Ltd. - японский автопроизводитель, один из крупнейших в мире. Компания основана в 1933 году.");
+CALL AddNewBrand("BMW", "BMW AG - немецкий производитель автомобилей, мотоциклов, двигателей, а также велосипедов. Председателем компании на сегодняшний день является Норберт Райтхофер, а главным дизайнером — Карим Хабиб");
+CALL AddNewBrand("Sony", "Sony Corporation, «Со́ни» - японская транснациональная корпорация со штаб-квартирой в Токио, образованная 7 мая 1946 года. Специализируется на выпуске домашней и профессиональной электроники, игровых консолей и другой высокотехнологичной продукции.");
+
+CALL AddNewProduct("Iphone 5s Space Gray 32gb", 21999, 1, 1);
+CALL AddNewProduct("Iphone 8 Space Gray 32gb", 70000, 1, 1);
+CALL AddNewProduct("Asus ROG GL502VL", 15000, 7, 2);
+CALL AddNewProduct("Grand Theft Auto V", 1999, 2, 1);
+CALL AddNewProduct("Iphone 5s Space Gray 64gb", 25999, 1, 1);
+CALL AddNewProduct("Iphone 5s Space Gray 128gb", 29999, 1, 1);
+CALL AddNewProduct("SteelSeriesSensayRaw", 2999, 1, 1);
+CALL AddNewProduct("Mem 2005 goda", 21999, 1, 1);

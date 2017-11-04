@@ -1,0 +1,645 @@
+ /*
+
+	База данных проекта ZendShop
+	Оч оч многа таблиц
+
+*/
+
+SET NAMES 'utf8';
+SET CHARACTER SET 'utf8';
+
+DROP DATABASE IF EXISTS ZendShopDataBase;
+CREATE DATABASE IF NOT EXISTS ZendShopDataBase CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+USE ZendShopDataBase;
+
+-- Создание таблицы "Разделы"
+DROP TABLE IF EXISTS Sections;
+CREATE TABLE IF NOT EXISTS Sections (
+	SectionId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	CreateDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	SectionName VARCHAR(50) NOT NULL
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Категории"
+DROP TABLE IF EXISTS Categories;
+CREATE TABLE IF NOT EXISTS Categories (
+	CategoryId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	CategoryName VARCHAR(50) NOT NULL,
+	CreateDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	SectionId INT NOT NULL,
+	FOREIGN KEY (SectionId) REFERENCES Sections(SectionId) ON DELETE CASCADE
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Бренды"
+DROP TABLE IF EXISTS Brands;
+CREATE TABLE IF NOT EXISTS Brands (
+	BrandId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	BrandName VARCHAR(50) NOT NULL,
+	BrandPictureURL TEXT NOT NULL,
+	CreateDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	BrandDesc TEXT NOT NULL
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Пользователь"
+DROP TABLE IF EXISTS Users;
+CREATE TABLE IF NOT EXISTS Users (
+	UserId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	Login VARCHAR(50) NOT NULL,
+	Password VARCHAR(50) NOT NULL,
+	Name VARCHAR(50) NOT NULL,
+	SurName VARCHAR(50) NOT NULL,
+	PhoneNumber VARCHAR(15),
+	Email VARCHAR(50) NOT NULL,
+	UserType INT NOT NULL DEFAULT 1
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Заявка на создание Компании"
+DROP TABLE IF EXISTS TicketOnCreateCompany;
+CREATE TABLE IF NOT EXISTS TicketOnCreateCompany (
+	TicketId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	CompanyName VARCHAR(50) NOT NULL,
+	Description TEXT NOT NULL,
+	UserId INT NOT NULL,
+	FOREIGN KEY (UserID) REFERENCES Users(UserId) ON DELETE CASCADE
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Компания"
+DROP TABLE IF EXISTS Company;
+CREATE TABLE IF NOT EXISTS Company (
+	CompanyId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	CompanyName VARCHAR(50) NOT NULL,
+	Description TEXT NOT NULL
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Участники в компании"
+DROP TABLE IF EXISTS PeopleInCompany;
+CREATE TABLE IF NOT EXISTS PeopleInCompany (
+	PidId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	UserID INT NOT NULL,
+	CompanyId INT NOT NULL,
+	Level INT NOT NULL,
+	FOREIGN KEY (UserID) REFERENCES Users(UserId) ON DELETE CASCADE,
+	FOREIGN KEY (CompanyId) REFERENCES Company(CompanyId) ON DELETE CASCADE
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Склад"
+DROP TABLE IF EXISTS Storage;
+CREATE TABLE IF NOT EXISTS Storage (
+	StorageId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	StorageAddres VARCHAR(50) NOT NULL,
+	CompanyId INT NOT NULL,
+	Description TEXT NOT NULL,
+	FOREIGN KEY (CompanyId) REFERENCES Company(CompanyId) ON DELETE CASCADE
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Витрина"
+DROP TABLE IF EXISTS Showcases;
+CREATE TABLE IF NOT EXISTS Showcases (
+	ShowcaseId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	CategoryId INT NOT NULL,
+	FOREIGN KEY (CategoryId) REFERENCES Categories(CategoryId) ON DELETE CASCADE
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Товары"
+DROP TABLE IF EXISTS Products;
+CREATE TABLE IF NOT EXISTS Products (
+	ProductId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	ProductName VARCHAR(50) NOT NULL,
+	Price INT NOT NULL DEFAULT 0,
+	PictureURL TEXT NOT NULL,
+	CreateDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CategoryId INT NOT NULL,
+	BrandId INT NOT NULL DEFAULT -1,
+	FOREIGN KEY (BrandId) REFERENCES Brands(BrandId) ON DELETE CASCADE
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Товары на витрине"
+DROP TABLE IF EXISTS ShowcasesProducts;
+CREATE TABLE IF NOT EXISTS ShowcasesProducts (
+	ShowcasesProductsId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	ProductId INT NOT NULL,
+	ShowcaseId INT NOT NULL,
+	FOREIGN KEY (ProductId) REFERENCES Products(ProductId) ON DELETE CASCADE,
+	FOREIGN KEY (ShowcaseId) REFERENCES Showcases(ShowcaseId) ON DELETE CASCADE
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+
+-- Создание таблицы "Товар"
+DROP TABLE IF EXISTS Items;
+CREATE TABLE IF NOT EXISTS Items (
+	ItemId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	ProductId INT NOT NULL,
+	CreateDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (ProductId) REFERENCES Products(ProductId) ON DELETE CASCADE
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Атрибуты"
+DROP TABLE IF EXISTS Attributes;
+CREATE TABLE IF NOT EXISTS Attributes (
+	AttributeId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	AttributeName VARCHAR(50) NOT NULL,
+	ProductID INT NOT NULL,
+	CreateDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (ProductId) REFERENCES Products(ProductId) ON DELETE CASCADE
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Значения атрибутов"
+DROP TABLE IF EXISTS AttributeValues;
+CREATE TABLE IF NOT EXISTS AttributeValues (
+	ValueId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	AttributeId INT NOT NULL,
+	ItemId INT NOT NULL,
+	Value TEXT NOT NULL,
+	FOREIGN KEY (AttributeId) REFERENCES Attributes(AttributeId) ON DELETE CASCADE,
+	FOREIGN KEY (ItemId) REFERENCES Items(ItemId) ON DELETE CASCADE
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Атрибуты продуктов"
+DROP TABLE IF EXISTS ProductAttributes;
+CREATE TABLE IF NOT EXISTS ProductAttributes (
+	PAId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	PAName VARCHAR(50) NOT NULL,
+	ProductId INT NOT NULL,
+	Value TEXT NOT NULL,
+	Important INT NOT NULL,
+	CreateDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (ProductId) REFERENCES Products(ProductId) ON DELETE CASCADE
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Отзывы"
+DROP TABLE IF EXISTS Reviews;
+CREATE TABLE IF NOT EXISTS Reviews (
+	ReviewId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	ProductId INT NOT NULL,
+	UserId INT NOT NULL,
+	ReviewText TEXT NOT NULL,
+	FOREIGN KEY (ProductId) REFERENCES Products(ProductId) ON DELETE CASCADE,
+	FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE 
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Заказы"
+DROP TABLE IF EXISTS Orders;
+CREATE TABLE IF NOT EXISTS Orders (
+	OrderId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	TargetCity VARCHAR(50) NOT NULL,
+	TargetStreet VARCHAR(50) NOT NULL,
+	TargetHome VARCHAR(50) NOT NULL,
+	UserId INT NOT NULL,
+	CreateDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Товары в заказе"
+DROP TABLE IF EXISTS ProductsInOrder;
+CREATE TABLE IF NOT EXISTS ProductsInOrder (
+	ProductInOrderId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	ProductId INT NOT NULL,
+	OrderId INT NOT NULL,
+	FOREIGN KEY (ProductId) REFERENCES Products(ProductId) ON DELETE CASCADE,
+	FOREIGN KEY (OrderId) REFERENCES Orders(OrderId) ON DELETE CASCADE
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
+-- Создание таблицы "Сессия пользователя"
+DROP TABLE IF EXISTS UserSession;
+CREATE TABLE IF NOT EXISTS UserSession (
+	UserSessionId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	Hash VARCHAR(50) NOT NULL,
+	CreateDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	EndDate TIMESTAMP NULL,
+	UserId INT NOT NULL,
+	SessionIpAddres    VARCHAR(50) NOT NULL,
+	FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE 
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+DELIMITER //
+
+/*---------------------------------------Для таблицы продукты----------------------------------*/
+
+-- Создает новый продукт
+CREATE OR REPLACE PROCEDURE AddNewProduct(NewName VARCHAR(50), Pr INT, CatID INT, Brid INT)
+BEGIN
+	INSERT INTO Products(ProductName, PictureURL, Price, CategoryId, BrandId) VALUES(NewName, 'not', Pr, CatId, Brid);
+END;
+
+//
+
+-- Удаляет продукт
+CREATE OR REPLACE PROCEDURE DeleteProduct(id INT)
+BEGIN
+	DELETE FROM Products WHERE id = ProductId;
+END;
+
+//
+
+-- Изменяет название продукта
+CREATE OR REPLACE PROCEDURE UpdateProductName(id INT, NewName VARCHAR(50))
+BEGIN
+	UPDATE Products SET ProductName = NewName WHERE Productid = id;
+END;
+
+//
+
+-- Изменяет цену продукта
+CREATE OR REPLACE PROCEDURE UpdateProductPrice(id INT, NewPrice INT)
+BEGIN
+	UPDATE Products SET Price = NewPrice WHERE Productid = id;
+END;
+
+//
+
+-- Изменяет категорию продукта
+CREATE OR REPLACE PROCEDURE UpdateProductCategory(id INT, NewCateg INT)
+BEGIN
+	UPDATE Products SET CategoryID = NewCateg WHERE Productid = id;
+END;
+
+//
+
+-- Изменяет бренд продукта
+CREATE OR REPLACE PROCEDURE UpdateProductBrand(id INT, NewBrand INT)
+BEGIN
+	UPDATE Products SET BrandId = NewBrand WHERE Productid = id;
+END;
+
+//
+
+-- Изменяет картинку продукта
+CREATE OR REPLACE PROCEDURE UpdateProductPicture(id INT,NewName TEXT)
+BEGIN
+	UPDATE Products SET PictureURL = NewName WHERE Productid = id;
+END;
+
+//
+
+/*---------------------------------------Для таблицы атрибуты продукта-------------------------*/
+
+-- Создает новый атрибут продукта
+CREATE OR REPLACE PROCEDURE AddNewProductAttribute(NewName VARCHAR(50), NewValue TEXT, NewImp INT, NewProductId INT)
+BEGIN
+	INSERT INTO ProductAttributes(PAName, Value, Important, ProductId) VALUES(NewName, NewValue, NewImp, NewProductId);
+END;
+
+//
+
+-- Удаляет атрибут продукта
+CREATE OR REPLACE PROCEDURE DeleteProductAttribute(id INT)
+BEGIN
+	DELETE FROM ProductAttributes WHERE id = PAId;
+END;
+
+//
+
+-- Изменяет название атрибута
+CREATE OR REPLACE PROCEDURE UpdateProductAttributeName(id INT, NewName VARCHAR(50))
+BEGIN
+	UPDATE ProductAttributes SET PAName = NewName WHERE PAid = id;
+END;
+
+//
+
+-- Изменяет значение атрибута
+CREATE OR REPLACE PROCEDURE UpdateProductAttributeValue(id INT, NewName TEXT)
+BEGIN
+	UPDATE ProductAttributes SET Value = NewName WHERE PAid = id;
+END;
+
+//
+
+-- Изменяет важность атрибута
+CREATE OR REPLACE PROCEDURE UpdateProductAttributeImportant(id INT, NewName INT)
+BEGIN
+	UPDATE ProductAttributes SET Important = NewName WHERE PAid = id;
+END;
+
+//
+
+/*--------------------------------------Для таблицы атрибуты товара---------------------------*/
+
+-- Создает новый атрибут товара
+CREATE OR REPLACE PROCEDURE AddNewAttribute(NewName VARCHAR(50), NewProductId INT)
+BEGIN
+	INSERT INTO ProductAttributes(PAName, Value, Important, ProductId) VALUES(NewName, NewValue, NewImp, NewProductId);
+END;
+
+//
+
+-- Удаляет атрибут товара
+CREATE OR REPLACE PROCEDURE DeleteAttribute(id INT)
+BEGIN
+	DELETE FROM ProductAttributes WHERE id = PAId;
+END;
+
+//
+
+-- Изменяет название атрибута товара
+CREATE OR REPLACE PROCEDURE UpdateAttributeName(id INT, NewName VARCHAR(50))
+BEGIN
+	UPDATE ProductAttributes SET PAName = NewName WHERE PAid = id;
+END;
+
+//
+
+DELIMITER ;
+-- Показывает таблицу продуктов
+CREATE OR REPLACE VIEW AdminProductsTable AS SELECT P.ProductId AS id, P.ProductName AS Name, P.Price, P.PictureURL, P.CreateDate AS Date, C.CategoryName, B.BrandName FROM Products AS P INNER JOIN Categories AS C ON C.CategoryId = P.CategoryId LEFT JOIN Brands AS B ON B.BrandId = P.BrandId ORDER BY P.ProductName;
+
+-- Показывает таблицу категорий
+CREATE OR REPLACE VIEW AdminCategoryForProductsTable AS SELECT C.CategoryId AS Id, CONCAT('(', S.SectionName, ') ', C.CategoryName) AS Name FROM Categories AS C INNER JOIN Sections AS S ON S.SectionId = C.SectionId ORDER BY S.SectionName;
+
+-- Показывает таблицу брендов
+CREATE OR REPLACE VIEW AdminBrandsForProductsTable AS SELECT BrandId AS Id, BrandName AS Name FROM Brands ORDER BY BrandName;
+
+-- Запрос на получение названия товара
+-- SELECT CONCAT(Name, ' (', id, ')') FROM AdminProductsTable WHERE id = :id;
+DELIMITER //
+
+-- Создает новый раздел
+CREATE OR REPLACE PROCEDURE AddNewSection(NewName VARCHAR(50))
+BEGIN
+	INSERT INTO Sections(SectionName) VALUES(NewName);
+END;
+
+//	
+
+-- Создает новую категорию
+CREATE OR REPLACE PROCEDURE AddNewCategory(NewName VARCHAR(50), SectId INT)
+BEGIN
+	INSERT INTO Categories(CategoryName, SectionId) VALUES(NewName, SectId);
+END;
+
+//
+
+-- Создает новый бренд
+CREATE OR REPLACE PROCEDURE AddNewBrand(NewName VARCHAR(50), Descr TEXT)
+BEGIN
+	INSERT INTO Brands(BrandName, BrandPictureURL, BrandDesc) VALUES(NewName, 'not', Descr);
+END;
+
+//
+
+-- Удаляет раздел
+CREATE OR REPLACE PROCEDURE DeleteSection(id INT)
+BEGIN
+	DELETE FROM Sections WHERE id = SectionId;
+END;
+
+//
+
+-- Удаляет категорию
+CREATE OR REPLACE PROCEDURE DeleteCategory(id INT)
+BEGIN
+	DELETE FROM Categories WHERE id = CategoryId;
+END;
+
+//
+
+-- Удаляет бренд
+CREATE OR REPLACE PROCEDURE DeleteBrand(id INT)
+BEGIN
+	DELETE FROM Brands WHERE id = BrandId;
+END;
+
+//
+
+-- Обновляет имя раздела
+CREATE OR REPLACE PROCEDURE UpdateSectionName(id INT, NewName VARCHAR(50))
+BEGIN
+	UPDATE Sections SET SectionName = NewName WHERE id = SectionId;
+END;
+
+//
+
+-- Обновляет имя категории
+CREATE OR REPLACE PROCEDURE UpdateCategoryName(Id INT, NewName VARCHAR(50))
+BEGIN
+	UPDATE Categories SET CategoryName = NewName WHERE Id = CategoryId;
+END;
+
+//
+
+-- Обновляет ид раздела к которой прикреплена категория
+CREATE OR REPLACE PROCEDURE UpdateCategorySection(Id INT, NewSect INT)
+BEGIN
+	UPDATE Categories SET SectionId = NewSect WHERE id = CategoryId;
+END;
+
+//
+
+-- Обновление названия бренда
+CREATE OR REPLACE PROCEDURE UpdateBrandName(id INT, NewName VARCHAR(50))
+BEGIN
+	UPDATE Brands Set BrandName = NewName WHERE Brandid = id;
+END;
+
+//
+
+-- Обновление описания бренда
+CREATE OR REPLACE PROCEDURE UpdateBrandDescription(id INT, NewDescr TEXT)
+BEGIN
+	UPDATE Brands Set BrandDesc = NewDescr WHERE Brandid = id;
+END;
+
+//
+
+-- Обновление картинки бренда
+CREATE OR REPLACE PROCEDURE UpdateBrandPicture(id INT, NewPath TEXT)
+BEGIN
+	UPDATE Brands Set BrandPictureURL = NewPath WHERE Brandid = id;
+END;
+
+//
+
+DELIMITER ;
+
+-- Поулчает таблицуц разделов
+CREATE OR REPLACE VIEW AdminSectionTable AS SELECT SectionId AS id, CreateDate AS Date, SectionName AS Name FROM Sections;
+
+-- Получает таблицу категорий 
+CREATE OR REPLACE VIEW AdminCategoriesTable AS SELECT C.CategoryId AS id, S.SectionName AS SectName, C.CreateDate AS Date, C.CategoryName AS Name FROM Categories AS C INNER JOIN Sections AS S ON C.SectionId = S.SectionId;
+
+-- Поулчает таблицуц брендов
+CREATE OR REPLACE VIEW AdminBrandsTable AS SELECT BrandId AS id, BrandName AS Name, BrandPictureURL AS picture, CreateDate AS Date, BrandDesc AS Descr FROM Brands;
+DROP PROCEDURE IF EXISTS AddNewAdmin;
+
+SET GLOBAL log_bin_trust_function_creators = 1;
+
+DELIMITER // 
+
+-- Создание администратора
+CREATE PROCEDURE IF NOT EXISTS AddNewAdmin(AdmnLogin VARCHAR(50), AdmnName VARCHAR(50), AdmnSurname VARCHAR(50), AdmnPassMd5 VARCHAR(50), AdmnMail VARCHAR(50))
+BEGIN
+	INSERT INTO Users(Login, Name, SurName, Password, Email, UserType, PhoneNumber) VALUES (AdmnLogin , AdmnName, AdmnSurname, MD5(AdmnPassMd5), AdmnMail, 0, '1');
+END;
+
+//
+
+DELIMITER ;
+DROP FUNCTION IF EXISTS AddNewUser;
+
+SET GLOBAL log_bin_trust_function_creators = 1;
+
+DELIMITER // 
+
+-- Создание нового пользователя
+CREATE FUNCTION IF NOT EXISTS AddNewUser(UserLogin VARCHAR(50), UserName VARCHAR(50), UserSurname VARCHAR(50), UserPassMd5 VARCHAR(50), UserMail VARCHAR(50), UserPhoneNumber VARCHAR(50))
+	RETURNS INTEGER
+BEGIN
+	IF EXISTS(SELECT * FROM Users WHERE UserLogin = Login OR UserMail = Email) THEN
+		RETURN 6;
+	ELSE
+		INSERT INTO Users(Login, Name, SurName, Password, Email, PhoneNumber) VALUES (UserLogin, UserName, UserSurname, UserPassMd5, UserMail, UserPhoneNumber);
+		RETURN 0;
+	END IF;
+END;
+
+//
+
+DELIMITER ;
+DROP FUNCTION IF EXISTS GetUserForSession;
+DROP FUNCTION IF EXISTS GetUserType;
+DROP FUNCTION IF EXISTS CreateNewSession;
+DROP FUNCTION IF EXISTS EndSession;
+
+SET GLOBAL log_bin_trust_function_creators = 1;
+
+DELIMITER // 
+
+-- Создание сессии
+CREATE FUNCTION IF NOT EXISTS CreateNewSession(UserLogin VARCHAR(50), UserPassword VARCHAR(50), SessionMd5 VARCHAR(50), Ip VARCHAR(50))
+	RETURNS INTEGER
+BEGIN
+	DECLARE UserNumber INTEGER;
+    DECLARE SessionNumber INTEGER;
+    
+	SELECT UserId FROM Users WHERE (Login = UserLogin) AND (UserPassword = Password) INTO UserNumber;
+
+	IF NOT EXISTS(SELECT UserId FROM Users WHERE (Login = UserLogin) AND (UserPassword = Password)) THEN
+		RETURN -1;
+	ELSE
+		UPDATE UserSession SET EndDate = NOW() WHERE (UserNumber = UserId) AND (EndDate IS NULL);
+
+		INSERT INTO UserSession(Hash, CreateDate, UserId, SessionIpAddres) VALUES(SessionMd5, NOW(), UserNumber, Ip);
+		RETURN UserNumber;
+	END IF;
+END;
+
+//
+
+-- Закрывает сессию
+CREATE FUNCTION IF NOT EXISTS EndSession(md5session VARCHAR(50))
+	RETURNS INTEGER
+BEGIN
+	IF NOT EXISTS(SELECT * FROM UserSession WHERE (md5session = hash) AND (EndDate IS NULL)) THEN
+		RETURN 1;
+	ELSE
+		UPDATE UserSession SET EndDate = NOW() WHERE (Hash = md5session) AND (EndDate IS NULL) ;
+		RETURN 0;
+	END IF;
+END;
+
+//
+
+-- Получает ид пользователя по хешу сеанса. Если ип адреса сеанса и машины запросившая страницу не совпадают, то сеанс заканчивается
+CREATE FUNCTION IF NOT EXISTS GetUserForSession(SessionMd5 VARCHAR(50), Ip VARCHAR(50))
+	RETURNS INTEGER
+BEGIN
+	DECLARE UserNumber INTEGER;
+
+	IF NOT EXISTS(SELECT * FROM UserSession WHERE (Hash = SessionMd5) AND (SessionIpAddres = Ip)) THEN
+		UPDATE UserSession SET EndDate = NOW() WHERE (Hash = SessionMd5) AND (EndDate IS NULL) ;
+		RETURN -1;
+	ELSE
+		IF EXISTS (SELECT * FROM UserSession WHERE (Hash = SessionMd5) AND (SessionIpAddres = Ip) AND (EndDate IS NULL)) THEN	
+			SELECT UserId FROM UserSession WHERE (Hash = SessionMd5) AND (SessionIpAddres = Ip) AND (EndDate IS NULL) INTO UserNumber;
+			RETURN UserNumber;
+		ELSE
+			RETURN -1;
+		END IF;
+	END IF;
+END;
+
+//
+
+-- Получает информацию о юзерере, админ ли он или просто публичный аккаунт?
+CREATE FUNCTION IF NOT EXISTS GetUserType(id INTEGER)
+	RETURNS INTEGER
+BEGIN
+	DECLARE RetValue INTEGER;
+	SELECT UserType FROM Users WHERE UserId = id INTO RetValue;
+	RETURN RetValue;
+END;
+
+//
+
+DELIMITER ;
+DROP FUNCTION IF EXISTS GetUserName;
+DROP FUNCTION IF EXISTS GetUserSurName;
+
+SET GLOBAL log_bin_trust_function_creators = 1;
+
+DELIMITER //
+
+-- Добываем имя юзера по его ид
+CREATE FUNCTION IF NOT EXISTS GetUserName(id INTEGER)
+	RETURNS VARCHAR(50)
+BEGIN
+	DECLARE UserName VARCHAR(50);
+	SELECT Name FROM Users WHERE UserId = id INTO UserName;
+	RETURN UserName;
+END;
+
+//
+
+-- Добываем фамилию юзера по его ид
+CREATE FUNCTION IF NOT EXISTS GetUserSurName(id INTEGER)
+	RETURNS VARCHAR(50)
+BEGIN
+	DECLARE UserName VARCHAR(50);
+	SELECT SurName FROM Users WHERE UserId = id INTO UserName;
+	RETURN UserName;
+END;
+
+//
+
+DELIMITER ;
+CALL AddNewAdmin("UserName", "Админ", "Адменович", "111111", "admin@mail.ru");
+
+CALL AddNewSection("Электроника");
+CALL AddNewSection("Бытовая техника");
+CALL AddNewSection("Обувь, одежда");
+CALL AddNewSection("Детям");
+CALL AddNewSection("Аптека");
+CALL AddNewSection("Цифровые товары");
+
+CALL AddNewCategory("Мобильные телефоны", 1);
+CALL AddNewCategory("Игры", 6);
+CALL AddNewCategory("Игрушки", 4);
+CALL AddNewCategory("Спортивная одежда", 3);
+CALL AddNewCategory("Спортивная обувт", 3);
+CALL AddNewCategory("Офисные программы", 6);
+CALL AddNewCategory("Компьютеры", 1);
+CALL AddNewCategory("Ноутбуки", 1);
+CALL AddNewCategory("Стиральные машинки", 2);
+CALL AddNewCategory("Утюги", 2);
+CALL AddNewCategory("Холодильники", 2);
+CALL AddNewCategory("Детские книги", 4);
+
+CALL AddNewBrand("Apple", "Apple - американская корпорация, производитель персональных и планшетных компьютеров, аудиоплееров, телефонов, программного обеспечения.");
+CALL AddNewBrand("Samsumg", "Samsung Group - южнокорейская группа компаний, один из крупнейших чеболей, основанный в 1938 году.");
+CALL AddNewBrand("Microsoft", "Май­кро­софт кор­по­рейшн (анг. Microsoft Corporation, как правило, именуется просто Microsoft; распространено сокращение MS) - одна из крупнейших транснациональных компаний по производству проприетарного программного обеспечения для различного рода вычислительной техники — персональных компьютеров, игровых приставок, КПК, мобильных телефонов и прочего, разработчик наиболее широко распространённой на данный момент в мире программной платформы - семейства операционных систем Windows.");
+CALL AddNewBrand("Nvidia", "NVIDIA Corporation - американская компания, один из крупнейших разработчиков графических ускорителей и процессоров, а также наборов системной логики.");
+CALL AddNewBrand("Intel", "И́нтел - производитель электронных устройств и компьютерных компонентов, включая микропроцессоры, наборы системной логики. Штаб-квартира расположена в Санта-Кларе, штат Калифорния.");
+CALL AddNewBrand("AMD", "Advanced Micro Devices, Inc. - производитель интегральной микросхемной электроники.");
+CALL AddNewBrand("Toshiba", "Toshiba Corporation - крупная транснациональная корпорация со штаб-квартирой в Токио, Япония.");
+CALL AddNewBrand("Nissan", "Nissan Motor Co., Ltd. - японский автопроизводитель, один из крупнейших в мире. Компания основана в 1933 году.");
+CALL AddNewBrand("BMW", "BMW AG - немецкий производитель автомобилей, мотоциклов, двигателей, а также велосипедов. Председателем компании на сегодняшний день является Норберт Райтхофер, а главным дизайнером — Карим Хабиб");
+CALL AddNewBrand("Sony", "Sony Corporation, «Со́ни» - японская транснациональная корпорация со штаб-квартирой в Токио, образованная 7 мая 1946 года. Специализируется на выпуске домашней и профессиональной электроники, игровых консолей и другой высокотехнологичной продукции.");
+
+CALL AddNewProduct("Iphone 5s Space Gray 32gb", 21999, 1, 1);
+CALL AddNewProduct("Iphone 8 Space Gray 32gb", 70000, 1, 1);
+CALL AddNewProduct("Asus ROG GL502VL", 15000, 7, 2);
+CALL AddNewProduct("Grand Theft Auto V", 1999, 2, 1);
+CALL AddNewProduct("Iphone 5s Space Gray 64gb", 25999, 1, 1);
+CALL AddNewProduct("Iphone 5s Space Gray 128gb", 29999, 1, 1);
+CALL AddNewProduct("SteelSeriesSensayRaw", 2999, 1, 1);
+CALL AddNewProduct("Mem 2005 goda", 21999, 1, 1);
