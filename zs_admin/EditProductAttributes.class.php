@@ -101,18 +101,14 @@
         // Ид изменяемого атрибута
         private $id;
 
-        // Ид продукта
-        private $productid;
-
 
 
         /* Функции */
 
         // Конструктор класса, в качестве параметра принимает ид , новое имя атрибута продукта и ид продукта
-        public function __construct($id, $newname, $productid) {
+        public function __construct($id, $newname) {
             parent::__construct();
 
-            $this->productid = $productid;
             $this->newname = $newname;
             $this->id = $id;
 
@@ -130,7 +126,6 @@
 
 
                 //print_r($this->query->errorInfo());
-                header('Location: http://'.$ROOT_PATH.'/admineditproducts.php?productid='.$this->productid.'&good=Название атрибута продукта было изменено');
             }
         }
     }
@@ -143,18 +138,13 @@
         // Ид изменяемого атрибута
         private $id;
 
-        // Ид продукта
-        private $productid;
-
-
 
         /* Функции */
 
         // Конструктор класса, в качестве параметра принимает ид , новое значение атрибута продукта и ид продукта
-        public function __construct($id, $newvalue, $productid) {
+        public function __construct($id, $newvalue) {
             parent::__construct();
 
-            $this->productid = $productid;
             $this->newname = $newvalue;
             $this->id = $id;
 
@@ -172,7 +162,6 @@
 
 
                 //print_r($this->query->errorInfo());
-                header('Location: http://'.$ROOT_PATH.'/admineditproducts.php?productid='.$this->productid.'&good=Значение атрибута продукта было изменено');
             }
         }
     }
@@ -193,10 +182,9 @@
         /* Функции */
 
         // Конструктор класса, в качестве параметра принимает ид , новое значение атрибута продукта и ид продукта
-        public function __construct($id, $newvalue, $productid) {
+        public function __construct($id, $newvalue) {
             parent::__construct();
 
-            $this->productid = $productid;
             $this->newname = $newvalue;
             $this->id = $id;
 
@@ -214,7 +202,6 @@
 
 
             //print_r($this->query->errorInfo());
-                header('Location: http://'.$ROOT_PATH.'/admineditproducts.php?productid='.$this->productid.'&good=Значение атрибута продукта было изменено');
             }
         }
     }

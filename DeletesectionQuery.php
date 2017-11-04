@@ -5,7 +5,7 @@
 
     require_once 'zs_admin/EditSections.class.php';
     
-    if ($_GET['id']) {
+    if (isset($_GET['id'])) {
         $q = new DeleteSection(htmlspecialchars($_GET['id']));
         $q->make();
     } else {

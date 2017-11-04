@@ -127,11 +127,10 @@
                 while ($this->result = $this->query->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
                     $this->smarty->assign('id', $this->result[0]);
                     $this->smarty->assign('name', $this->result[2]);
-                    $this->smarty->assign('value', $this->result[3]);
-                    $this->smarty->assign('im', ($this->result[4] == 1) ? "Да" : "Нет");
-                    $this->smarty->assign('date', $this->result[5]);
+                    $this->smarty->assign('date', $this->result[3]);
+                    $this->smarty->assign('productid', $this->productid);
 
-                    $this->importantattrtable .= $this->smarty->fetch("admin-products-ia-table.tpl");
+                    $this->hidenattrtable .= $this->smarty->fetch("admin-products-ha-table.tpl");
                 }
             }
         }
@@ -152,6 +151,7 @@
             $this->smarty->assign("productid", $this->productid);
             $this->smarty->assign("productname", $this->productname);
             $this->smarty->assign("importantattr", $this->importantattrtable);
+            $this->smarty->assign('hatable', $this->hidenattrtable);
             $this->smarty->assign('good', $this->good);
             $this->smarty->assign('error', $this->error);
 

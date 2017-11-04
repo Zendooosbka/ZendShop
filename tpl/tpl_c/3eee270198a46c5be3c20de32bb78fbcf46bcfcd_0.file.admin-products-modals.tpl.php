@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-11-04 04:09:59
+/* Smarty version 3.1.30, created on 2017-11-05 00:42:08
   from "/var/www/html/zendshop/tpl/tpl/admin-products-modals.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_59fd1367064475_30695880',
+  'unifunc' => 'content_59fe34309f8fb5_95420802',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '3eee270198a46c5be3c20de32bb78fbcf46bcfcd' => 
     array (
       0 => '/var/www/html/zendshop/tpl/tpl/admin-products-modals.tpl',
-      1 => 1509757788,
+      1 => 1509831419,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_59fd1367064475_30695880 (Smarty_Internal_Template $_smarty_tpl) {
+function content_59fe34309f8fb5_95420802 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <div id="ModalProductUpdateDialog" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -112,7 +112,7 @@ function content_59fd1367064475_30695880 (Smarty_Internal_Template $_smarty_tpl)
     <div class="modal-dialog">
 
         <!-- Modal content-->
-        <form action="UpdateproductattributeQuery,php.php" method="post">
+        <form action="UpdateproductattributeQuery.php" method="post">
             <div class="modal-content">
                 <input type="hidden" id="updateproductattributeid" name="id" value="0">
                 <div class="modal-header">
@@ -154,6 +154,34 @@ function content_59fd1367064475_30695880 (Smarty_Internal_Template $_smarty_tpl)
         </form>
     </div>
 </div>
+
+    <div id="ModalAttributeUpdateDialog" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <form action="UpateattributeQuery.php" method="post">
+                <div class="modal-content">
+                    <input type="hidden" id="updateattributeid" name="id" value="0">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Изменение атрибута</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="productid" value="<?php echo $_smarty_tpl->tpl_vars['productid']->value;?>
+">
+                        <div class="form-group">
+                            <label for="attrname">Название атрибута</label>
+                            <input type="text" id="attrname" name="attrname" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Изменить аттрибут продукта</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 <?php }
 }
 }

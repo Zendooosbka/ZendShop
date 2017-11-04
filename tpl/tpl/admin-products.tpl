@@ -127,8 +127,6 @@
         <h3>Редактирование атрибутов товара: {$productname} </h3>
     </div>
     <div class="panel-body">
-
-        <h2>Вы не выбрали продукт!!!</h2>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -140,14 +138,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>0</td>
-                <td>Цвет</td>
-                <td>Дата лалалалалал</td>
-                <td><span class="glyphicon glyphicon-pencil"></span></td>
-                <td><span class="glyphicon glyphicon-remove"></span></td>
-            </tr>
-
+                {$hatable}
             </tbody>
         </table>
         <div class="panel panel-default">
@@ -155,8 +146,8 @@
                 <h5>Добавление атрибута</h5>
             </div>
             <div class="panel-body">
-                <form action="AddnewhidenattributeQuery.php" method="post">
-                    <input type="hidden" name="id" value="$productid">
+                <form action="AddnewattributeQuery.php" method="post">
+                    <input type="hidden" name="id" value="{$productid}">
                     <div class="form-group">
                         <label for="attrname">Название атрибута</label>
                         <input type="attrname" id="attrname" name="attrname" class="form-control">

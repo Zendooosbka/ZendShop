@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-11-04 03:47:14
+/* Smarty version 3.1.30, created on 2017-11-05 00:26:17
   from "/var/www/html/zendshop/tpl/tpl/admin-products.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_59fd0e128cb295_18325161',
+  'unifunc' => 'content_59fe3079ac56b7_48126966',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'b705fea9f3ff75f359a5a75578e9af67efe147a8' => 
     array (
       0 => '/var/www/html/zendshop/tpl/tpl/admin-products.tpl',
-      1 => 1509756329,
+      1 => 1509830770,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_59fd0e128cb295_18325161 (Smarty_Internal_Template $_smarty_tpl) {
+function content_59fe3079ac56b7_48126966 (Smarty_Internal_Template $_smarty_tpl) {
 if ($_smarty_tpl->tpl_vars['good']->value != null) {?>
     <div class="alert alert-success">
         <strong>Готово!</strong> <?php echo $_smarty_tpl->tpl_vars['good']->value;?>
@@ -159,8 +159,6 @@ if ($_smarty_tpl->tpl_vars['good']->value != null) {?>
  </h3>
     </div>
     <div class="panel-body">
-
-        <h2>Вы не выбрали продукт!!!</h2>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -172,13 +170,7 @@ if ($_smarty_tpl->tpl_vars['good']->value != null) {?>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>0</td>
-                <td>Цвет</td>
-                <td>Дата лалалалалал</td>
-                <td><span class="glyphicon glyphicon-pencil"></span></td>
-                <td><span class="glyphicon glyphicon-remove"></span></td>
-            </tr>
+                <?php echo $_smarty_tpl->tpl_vars['hatable']->value;?>
 
             </tbody>
         </table>
@@ -187,8 +179,9 @@ if ($_smarty_tpl->tpl_vars['good']->value != null) {?>
                 <h5>Добавление атрибута</h5>
             </div>
             <div class="panel-body">
-                <form action="AddnewhidenattributeQuery.php" method="post">
-                    <input type="hidden" name="id" value="$productid">
+                <form action="AddnewattributeQuery.php" method="post">
+                    <input type="hidden" name="id" value="<?php echo $_smarty_tpl->tpl_vars['productid']->value;?>
+">
                     <div class="form-group">
                         <label for="attrname">Название атрибута</label>
                         <input type="attrname" id="attrname" name="attrname" class="form-control">
