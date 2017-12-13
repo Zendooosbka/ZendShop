@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-11-05 00:26:17
+/* Smarty version 3.1.30, created on 2017-11-12 17:33:25
   from "/var/www/html/zendshop/tpl/tpl/admin-products.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_59fe3079ac56b7_48126966',
+  'unifunc' => 'content_5a085bb5c13222_99215985',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'b705fea9f3ff75f359a5a75578e9af67efe147a8' => 
     array (
       0 => '/var/www/html/zendshop/tpl/tpl/admin-products.tpl',
-      1 => 1509830770,
+      1 => 1510435789,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_59fe3079ac56b7_48126966 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5a085bb5c13222_99215985 (Smarty_Internal_Template $_smarty_tpl) {
 if ($_smarty_tpl->tpl_vars['good']->value != null) {?>
     <div class="alert alert-success">
         <strong>Готово!</strong> <?php echo $_smarty_tpl->tpl_vars['good']->value;?>
@@ -128,7 +128,7 @@ if ($_smarty_tpl->tpl_vars['good']->value != null) {?>
                 <h5>Добавление атрибута</h5>
             </div>
             <div class="panel-body">
-                <form action="AddnewproductattributeQuery.php" method="post">
+                <form action="AddproductattributeQuery.php" method="post">
                     <input type="hidden" name="attrproductid" value="<?php echo $_smarty_tpl->tpl_vars['productid']->value;?>
 ">
                     <div class="form-group">
@@ -179,7 +179,7 @@ if ($_smarty_tpl->tpl_vars['good']->value != null) {?>
                 <h5>Добавление атрибута</h5>
             </div>
             <div class="panel-body">
-                <form action="AddnewattributeQuery.php" method="post">
+                <form action="AddattributeQuery.php" method="post">
                     <input type="hidden" name="id" value="<?php echo $_smarty_tpl->tpl_vars['productid']->value;?>
 ">
                     <div class="form-group">

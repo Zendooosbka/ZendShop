@@ -98,7 +98,7 @@
                 <h5>Добавление атрибута</h5>
             </div>
             <div class="panel-body">
-                <form action="AddnewproductattributeQuery.php" method="post">
+                <form action="AddproductattributeQuery.php" method="post">
                     <input type="hidden" name="attrproductid" value="{$productid}">
                     <div class="form-group">
                         <label for="attrname">Название атрибута</label>
@@ -146,7 +146,7 @@
                 <h5>Добавление атрибута</h5>
             </div>
             <div class="panel-body">
-                <form action="AddnewattributeQuery.php" method="post">
+                <form action="AddattributeQuery.php" method="post">
                     <input type="hidden" name="id" value="{$productid}">
                     <div class="form-group">
                         <label for="attrname">Название атрибута</label>

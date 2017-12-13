@@ -8,10 +8,10 @@
                 <a href="admineditproducts.php" class="btn btn-success {if $page == 1} disabled {/if}">Редакторование товаров</a>
             </div>
             <div class="col-sm-3">
-                <a href="" class="btn btn-success {if $page == 2} disabled {/if}">Редакторование витрин</a>
+                <a href="admineditshowwindows.php" class="btn btn-success {if $page == 2} disabled {/if}">Редакторование витрин</a>
             </div>
             <div class="col-sm-3">
-                <a href="" class="btn btn-danger {if $page == 3} disabled {/if}">Редакторование пользователей</a>
+                <a href="admineditusers.php" class="btn btn-danger {if $page == 3} disabled {/if}">Редакторование пользователей</a>
             </div>
         </div>
     </div>

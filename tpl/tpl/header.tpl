@@ -20,7 +20,7 @@
             <nav class="navbar navbar-inverse">
                 <div class="container-fluid">
                     <ul class="nav navbar-nav">
-                        <li><a href="index.php">Главная</a></li>
+                        <li><a href="Index.php">Главная</a></li>
                         <li><a href="about.php">О нас</a></li>
                         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Категории<span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -43,7 +43,7 @@
                         {else}
                         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{$name} {$surname} <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="about.php"><span class="glyphicon glyphicon-home"></span> Личный кабинет</a></li>
+                                <li><a href="account.php"><span class="glyphicon glyphicon-home"></span> Личный кабинет</a></li>
                                 <li><a href="about.php"><span class="glyphicon glyphicon-shopping-cart"></span> Корзина</a></li>
                                 {if ($isuser == true) && ($isadmin == true) }
                                     <li><a href="admineditscb.php"><span class="glyphicon glyphicon-ok"></span> Админ панель</a></li>

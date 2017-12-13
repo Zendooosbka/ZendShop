@@ -71,9 +71,9 @@
             global $ROOT_PATH;
 
             if ($this->session->isadmin()) {
-                if (!is_numeric($this->prise)) {
+                /*if (!is_numeric($this->prise)) {
                     header('Location: http://'.$ROOT_PATH.'/admineditproducts.php?error=Цена не является числом '.$this->newname);
-                } else if (strlen($this->newname) > 50) {
+                } else*/ if (strlen($this->newname) > 50) {
                     header('Location: http://'.$ROOT_PATH.'/admineditproducts.php?error=Очень длинное название '.$this->newname);
                 } else {
 

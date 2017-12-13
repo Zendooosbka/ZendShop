@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-10-17 19:38:19
+/* Smarty version 3.1.30, created on 2017-11-14 14:01:57
   from "/var/www/html/zendshop/tpl/tpl/header.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_59e631fbb61634_80585630',
+  'unifunc' => 'content_5a0acd253aed20_13687396',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '24bee599c7778838374b2cc09ff558010a0370c8' => 
     array (
       0 => '/var/www/html/zendshop/tpl/tpl/header.tpl',
-      1 => 1508258297,
+      1 => 1510657310,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_59e631fbb61634_80585630 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5a0acd253aed20_13687396 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +49,7 @@ function content_59e631fbb61634_80585630 (Smarty_Internal_Template $_smarty_tpl)
             <nav class="navbar navbar-inverse">
                 <div class="container-fluid">
                     <ul class="nav navbar-nav">
-                        <li><a href="index.php">Главная</a></li>
+                        <li><a href="Index.php">Главная</a></li>
                         <li><a href="about.php">О нас</a></li>
                         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Категории<span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -75,7 +75,7 @@ function content_59e631fbb61634_80585630 (Smarty_Internal_Template $_smarty_tpl)
  <?php echo $_smarty_tpl->tpl_vars['surname']->value;?>
  <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="about.php"><span class="glyphicon glyphicon-home"></span> Личный кабинет</a></li>
+                                <li><a href="account.php"><span class="glyphicon glyphicon-home"></span> Личный кабинет</a></li>
                                 <li><a href="about.php"><span class="glyphicon glyphicon-shopping-cart"></span> Корзина</a></li>
                                 <?php if (($_smarty_tpl->tpl_vars['isuser']->value == true) && ($_smarty_tpl->tpl_vars['isadmin']->value == true)) {?>
                                     <li><a href="admineditscb.php"><span class="glyphicon glyphicon-ok"></span> Админ панель</a></li>

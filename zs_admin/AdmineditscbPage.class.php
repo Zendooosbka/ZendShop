@@ -93,7 +93,7 @@
                 $this->smarty->assign('image', $this->result[2]);
                 $this->smarty->assign('descr', $this->result[4]);
                 
-                $this->brandstable .= $this->smarty->fetch("admin-scb-b-modals.tpl");
+                $this->modals .= $this->smarty->fetch("admin-scb-b-modals.tpl");
             }
         }
         

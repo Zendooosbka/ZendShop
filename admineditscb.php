@@ -8,6 +8,4 @@
     $p = new AdmineditscbPage('Админ панель');
     $p->Draw();
     //$p->PrintClass();
-
-    echo true;
 ?>

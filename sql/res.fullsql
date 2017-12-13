@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS Users (
 	SurName VARCHAR(50) NOT NULL,
 	PhoneNumber VARCHAR(15),
 	Email VARCHAR(50) NOT NULL,
+	TelegramUse INT NOT NULL DEFAULT 0,
 	UserType INT NOT NULL DEFAULT 1
 ) ENGINE = InnoDB   CHARACTER SET = UTF8;
 
@@ -59,8 +60,12 @@ DROP TABLE IF EXISTS TicketOnCreateCompany;
 CREATE TABLE IF NOT EXISTS TicketOnCreateCompany (
 	TicketId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	CompanyName VARCHAR(50) NOT NULL,
+	Address VARCHAR(50) NOT NULL,
 	Description TEXT NOT NULL,
+	INN VARCHAR(15) NOT NULL,
 	UserId INT NOT NULL,
+	State INT NOT NULL DEFAULT 0,
+	CreateDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (UserID) REFERENCES Users(UserId) ON DELETE CASCADE
 ) ENGINE = InnoDB   CHARACTER SET = UTF8;
 
@@ -69,6 +74,9 @@ DROP TABLE IF EXISTS Company;
 CREATE TABLE IF NOT EXISTS Company (
 	CompanyId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	CompanyName VARCHAR(50) NOT NULL,
+	Address VARCHAR(50) NOT NULL,
+	INN VARCHAR(15) NOT NULL,
+	CreateDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	Description TEXT NOT NULL
 ) ENGINE = InnoDB   CHARACTER SET = UTF8;
 
@@ -81,23 +89,27 @@ CREATE TABLE IF NOT EXISTS PeopleInCompany (
 	Level INT NOT NULL,
 	FOREIGN KEY (UserID) REFERENCES Users(UserId) ON DELETE CASCADE,
 	FOREIGN KEY (CompanyId) REFERENCES Company(CompanyId) ON DELETE CASCADE
-) ENGINE = InnoDB   CHARACTER SET = UTF8;
+) ENGINE = InnoDB   CHARACTER SET = UTF8;	
 
 -- Создание таблицы "Склад"
 DROP TABLE IF EXISTS Storage;
 CREATE TABLE IF NOT EXISTS Storage (
 	StorageId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	StorageName VARCHAR(50) NOT NULL,
 	StorageAddres VARCHAR(50) NOT NULL,
+	CoordX VARCHAR(50) NOT NULL,
+	CoordY VARCHAR(50) NOT NULL,
 	CompanyId INT NOT NULL,
-	Description TEXT NOT NULL,
 	FOREIGN KEY (CompanyId) REFERENCES Company(CompanyId) ON DELETE CASCADE
 ) ENGINE = InnoDB   CHARACTER SET = UTF8;
 
 -- Создание таблицы "Витрина"
-DROP TABLE IF EXISTS Showcases;
-CREATE TABLE IF NOT EXISTS Showcases (
-	ShowcaseId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+DROP TABLE IF EXISTS Showwindows;
+CREATE TABLE IF NOT EXISTS Showwindows (
+	ShowwindowId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	Name VARCHAR(50) NOT NULL,
 	CategoryId INT NOT NULL,
+	CreateDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (CategoryId) REFERENCES Categories(CategoryId) ON DELETE CASCADE
 ) ENGINE = InnoDB   CHARACTER SET = UTF8;
 
@@ -115,13 +127,13 @@ CREATE TABLE IF NOT EXISTS Products (
 ) ENGINE = InnoDB   CHARACTER SET = UTF8;
 
 -- Создание таблицы "Товары на витрине"
-DROP TABLE IF EXISTS ShowcasesProducts;
-CREATE TABLE IF NOT EXISTS ShowcasesProducts (
-	ShowcasesProductsId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+DROP TABLE IF EXISTS ShowwindowProducts;
+CREATE TABLE IF NOT EXISTS ShowwindowProducts (
+	ShowwindowProductsId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	ProductId INT NOT NULL,
-	ShowcaseId INT NOT NULL,
+	ShowwindowId INT NOT NULL,
 	FOREIGN KEY (ProductId) REFERENCES Products(ProductId) ON DELETE CASCADE,
-	FOREIGN KEY (ShowcaseId) REFERENCES Showcases(ShowcaseId) ON DELETE CASCADE
+	FOREIGN KEY (ShowwindowId) REFERENCES Showwindows(ShowwindowId) ON DELETE CASCADE
 ) ENGINE = InnoDB   CHARACTER SET = UTF8;
 
 
@@ -211,6 +223,136 @@ CREATE TABLE IF NOT EXISTS UserSession (
 	SessionIpAddres    VARCHAR(50) NOT NULL,
 	FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE 
 ) ENGINE = InnoDB   CHARACTER SET = UTF8;
+SET GLOBAL log_bin_trust_function_creators = 1;
+
+DELIMITER //
+
+-- Изменяет логин аккаунта
+CREATE OR REPLACE PROCEDURE AccountUpdateLogin(id INT, NewName VARCHAR(50))
+BEGIN
+	UPDATE Users SET Login = NewName WHERE id = UserId;
+END;
+
+//
+
+-- Изменяет пароль аккаунта
+CREATE OR REPLACE PROCEDURE AccountUpdatePassword(id INT, NewName VARCHAR(50))
+BEGIN
+	UPDATE Users SET Password = NewName WHERE id = UserId;
+END;
+
+//
+
+-- Изменяет телефон аккаунта
+CREATE OR REPLACE PROCEDURE AccountUpdatePhone(id INT, NewName VARCHAR(15))
+BEGIN
+	UPDATE Users SET PhoneNumber = NewName WHERE id = UserId;
+END;
+
+//
+
+-- Изменяет почту аккаунта
+CREATE OR REPLACE PROCEDURE AccountUpdateEmail(id INT, NewName VARCHAR(50))
+BEGIN
+	UPDATE Users SET Email = NewName WHERE id = UserId;
+END;
+
+//
+
+-- Проверка существования логина в системе
+CREATE OR REPLACE FUNCTION AccountCheckLogin(UserLogin VARCHAR(50))
+	RETURNS INTEGER
+BEGIN
+	IF EXISTS(SELECT * FROM Users WHERE Login = UserLogin) THEN
+		RETURN 1;
+	ELSE
+		
+		RETURN 0;
+	END IF;
+END;
+
+//
+
+-- Проверка существования телефона в системе
+CREATE OR REPLACE FUNCTION AccountCheckPhone(UserLogin VARCHAR(15))
+	RETURNS INTEGER
+BEGIN
+	IF EXISTS(SELECT * FROM Users WHERE PhoneNumber = UserLogin) THEN
+		RETURN 1;
+	ELSE
+		
+		RETURN 0;
+	END IF;
+END;
+
+//
+
+-- Проверка существования почты в системе
+CREATE OR REPLACE FUNCTION AccountCheckEmail(UserLogin VARCHAR(50))
+	RETURNS INTEGER
+BEGIN
+	IF EXISTS(SELECT * FROM Users WHERE Email = UserLogin) THEN
+		RETURN 1;
+	ELSE
+		
+		RETURN 0;
+	END IF;
+END;
+
+//
+
+-- Проверка существования билета на создание компании от этого пользователя
+CREATE OR REPLACE FUNCTION AccountCheckTicket(NewUserId INT)
+	RETURNS INTEGER
+BEGIN
+	IF EXISTS(SELECT * FROM TicketOnCreateCompany WHERE UserId = NewUserId) THEN
+		RETURN 1;
+	ELSE
+		
+		RETURN 0;
+	END IF;
+END;
+
+
+//
+
+-- Проверка существования компании у этого пользователя
+CREATE OR REPLACE FUNCTION AccountCheckUserInCompany(NewUserId INT)
+	RETURNS INTEGER
+BEGIN
+	SET @companyid := -1;
+
+	IF EXISTS(SELECT * FROM PeopleInCompany WHERE UserId = NewUserId) THEN
+		SELECT CompanyId INTO @companyid FROM PeopleInCompany WHERE UserId = NewUserId;
+		RETURN @companyid;
+	ELSE
+		
+		RETURN 0;
+	END IF;
+END;
+
+//
+
+-- Создание запроса на добавление компании в систему
+CREATE OR REPLACE PROCEDURE AccountCreateTicketForCompany(NewUserId INT, NewCompanyName VARCHAR(50), NewAddress VARCHAR(50), NewINN VARCHAR(15), NewDescription TEXT)
+BEGIN
+	INSERT INTO TicketOnCreateCompany(UserId, CompanyName, Address, INN, Description) VALUES(NewUserId, NewCompanyName, NewAddress, NewINN, NewDescription);
+END;
+
+//
+
+-- CREATE OR REPLACE PROCEDURE AccountAddNew
+
+DELIMITER ;
+CREATE OR REPLACE VIEW AccountUserInformation AS SELECT UserId AS id, Login, Name, SurName, PhoneNumber, Email FROM Users;
+
+CREATE OR REPLACE VIEW AccoutTicketInfo AS SELECT TicketId AS id, CompanyName AS Name, Address, Description, INN, UserId FROM TicketOnCreateCompany;
+
+CREATE OR REPLACE VIEW AccountGetCompanyOwners AS SELECT U.Name, U.Surname, C.UserId, C.CompanyId FROM PeopleInCompany AS C INNER JOIN Users AS U ON C.UserId = U.UserId;
+
+CREATE OR REPLACE VIEW AccountGetCompanyInfo AS SELECT C.CompanyId, C.CompanyName, C.Address, C.INN, C.Description, U.Name, U.SurName FROM Company AS C INNER JOIN AccountGetCompanyOwners AS U ON C.CompanyId = U.CompanyId;
+
+-- CREATE OR REPLACE VIEW AccoutGetStock AS SELECT  FROM Storage;
 DELIMITER //
 
 /*---------------------------------------Для таблицы продукты----------------------------------*/
@@ -465,6 +607,82 @@ CREATE OR REPLACE VIEW AdminCategoriesTable AS SELECT C.CategoryId AS id, S.Sect
 
 -- Поулчает таблицуц брендов
 CREATE OR REPLACE VIEW AdminBrandsTable AS SELECT BrandId AS id, BrandName AS Name, BrandPictureURL AS picture, CreateDate AS Date, BrandDesc AS Descr FROM Brands;
+-- Создание таблицы "Витрина"
+--	ShowwindowId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--	Name VARCHAR(50) NOT NULL,
+--	CategoryId INT NOT NULL,
+--	CreateDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+-- Создание таблицы "Товары на витрине"
+
+--	ShowwindowProductsId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--	ProductId INT NOT NULL,
+--	ShowwindowId INT NOT NULL,
+
+-- Создает новый атрибут товара
+
+DELIMITER //
+
+-- Добавляет витрину
+CREATE OR REPLACE PROCEDURE AddNewShowWindow(NewName VARCHAR(50), NewCategoryId INT)
+BEGIN
+	INSERT INTO Showwindows(Name, CategoryId) VALUES(NewName, NewCategoryId);
+END;
+
+//
+
+-- Удаляет категорию витрины
+CREATE OR REPLACE PROCEDURE DeleteShowWindow(id INT)
+BEGIN
+	DELETE FROM Showwindows WHERE id = ShowwindowId;
+END;
+
+//
+
+-- Изменяет название витрины
+CREATE OR REPLACE PROCEDURE UpdateShowWindowName(id INT, NewName VARCHAR(50))
+BEGIN
+	UPDATE Showwindows SET Name = NewName WHERE id = ShowwindowId;
+END;
+
+//
+
+-- Изменяет кагерию витрины
+CREATE OR REPLACE PROCEDURE UpdateShowWindowCategory(id INT, NewCategoryId INT)
+BEGIN
+	UPDATE Showwindows SET CategoryId = NewCategoryId WHERE id = ShowwindowId;
+END;
+
+//
+
+-- Добавляет продукт на витрину
+CREATE OR REPLACE PROCEDURE AddPoductInShowWindow(_ShowWindowID INT, _ProductID INT)
+BEGIN
+	INSERT INTO ShowwindowProducts(ShowwindowId, ProductId) VALUES(_ShowWindowID, _ProductID);
+END;
+
+//
+
+-- Удаляет продукт с витрины
+CREATE OR REPLACE PROCEDURE DeleteProductFromShowWindow(id INT)
+BEGIN
+	DELETE FROM ShowwindowProducts WHERE id = ShowwindowProductsId;
+END;
+
+//
+
+DELIMITER ;
+-- Показывает таблицу витрин
+CREATE OR REPLACE VIEW AdminShowWindowsTable AS SELECT SW.ShowwindowId AS Id, SW.Name, S.CategoryName, SW.CreateDate AS Date, S.CategoryId FROM Showwindows AS SW INNER JOIN Categories AS S ON SW.CategoryId = S.CategoryId ORDER BY Date;
+
+-- Показывает таблицу категорий
+CREATE OR REPLACE VIEW AdminCategoryForShowWindowTable AS SELECT C.CategoryId AS Id, CONCAT('(', S.SectionName, ') ', C.CategoryName) AS Name FROM Categories AS C INNER JOIN Sections AS S ON S.SectionId = C.SectionId ORDER BY S.SectionName;
+
+-- Показывает таблицу продуктов
+CREATE OR REPLACE VIEW AdminProductsTableForShowWindow AS SELECT P.ProductId AS id, P.ProductName AS Name, P.Price, P.PictureURL, P.CreateDate AS Date, C.CategoryName, B.BrandName, C.CategoryId, B.BrandId FROM Products AS P INNER JOIN Categories AS C ON C.CategoryId = P.CategoryId LEFT JOIN Brands AS B ON B.BrandId = P.BrandId ORDER BY P.ProductName;
+
+-- Показывает таблицу продуктов которые находятся на витрине
+CREATE OR REPLACE VIEW AdminProductsInShowWindow AS SELECT SP.ShowwindowProductsId AS id, P.Name AS Name, P.Price, P.PictureURL, P.Date, P.CategoryName, P.BrandName, SP.ProductId, SP.ShowwindowId FROM ShowwindowProducts AS SP INNER JOIN AdminProductsTableForShowWindow AS P ON SP.ProductId = P.id;
 DROP PROCEDURE IF EXISTS AddNewAdmin;
 
 SET GLOBAL log_bin_trust_function_creators = 1;
@@ -480,6 +698,38 @@ END;
 //
 
 DELIMITER ;
+DELIMITER //
+
+-- Добавляет аккаунт в компанию
+CREATE OR REPLACE PROCEDURE AddAccoutInCompany(_UserId INT, CompId INT, _level INT)
+BEGIN
+	INSERT INTO PeopleInCompany(UserId, CompanyId, Level) VALUES(_UserId, CompId, _level);
+END;
+
+//
+
+-- Добавляет компанию
+CREATE OR REPLACE PROCEDURE CreateCompany(__Ticketid INT)
+BEGIN
+	INSERT INTO Company(CompanyName, Address, INN, Description) SELECT CompanyName, Address, INN, Description FROM TicketOnCreateCompany WHERE __Ticketid = TicketId;
+	UPDATE TicketOnCreateCompany SET State = 1 WHERE TicketId = __Ticketid;
+
+	SET @companyid := -1;
+	SET @creatoruserid := -1;
+
+	SELECT CompanyId INTO @companyid FROM Company WHERE INN = (SELECT INN FROM TicketOnCreateCompany WHERE __Ticketid = TicketId);
+	SELECT UserId INTO @creatoruserid FROM TicketOnCreateCompany WHERE __Ticketid = TicketId;
+
+	CALL AddAccoutInCompany(@creatoruserid, @companyid, 0);
+	
+END;
+
+//
+
+DELIMITER ;	
+CREATE OR REPLACE VIEW AdminGetTickets AS SELECT T.TicketId, T.userid, T.State, U.Login, U.PhoneNumber AS Phone, U.Email, T.CompanyName, T.Address, T.Description, T.INN, T.CreateDate AS Date FROM TicketOnCreateCompany AS T INNER JOIN Users AS U ON T.UserId = U.UserId;
+
+CREATE OR REPLACE VIEW AdminGetCompany AS SELECT C.CompanyId AS id, C.CompanyName AS Name, C.Address, C.INN, C.CreateDate, O.UserId FROM Company AS C INNER JOIN (SELECT * FROM PeopleInCompany WHERE Level = 0) AS O ON C.CompanyId = O.CompanyId;
 DROP FUNCTION IF EXISTS AddNewUser;
 
 SET GLOBAL log_bin_trust_function_creators = 1;
