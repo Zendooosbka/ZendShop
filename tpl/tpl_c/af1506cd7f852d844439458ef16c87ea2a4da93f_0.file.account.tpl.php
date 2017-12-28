@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-12-13 22:56:25
+/* Smarty version 3.1.30, created on 2017-12-28 08:07:55
   from "/var/www/html/zendshop/tpl/tpl/account.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_5a3185e9e84f43_11883701',
+  'unifunc' => 'content_5a447c2be21dd2_00075426',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'af1506cd7f852d844439458ef16c87ea2a4da93f' => 
     array (
       0 => '/var/www/html/zendshop/tpl/tpl/account.tpl',
-      1 => 1513194142,
+      1 => 1514437673,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5a3185e9e84f43_11883701 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5a447c2be21dd2_00075426 (Smarty_Internal_Template $_smarty_tpl) {
 if ($_smarty_tpl->tpl_vars['good']->value != null) {?>
     <div class="alert alert-success">
         <strong>Готово!</strong> <?php echo $_smarty_tpl->tpl_vars['good']->value;?>
@@ -84,7 +84,7 @@ if ($_smarty_tpl->tpl_vars['good']->value != null) {?>
                     <td colspan="4"></td>
                 </tr>
                 <tr class="info">
-                    <td colspan="4">Почта нужна для того что бы кекать мемить писать какать в попу ибаться и для других крутых дел</td>
+                    <td colspan="4">Почта нужна для дополнительного источника связи</td>
                 </tr>
                 <tr>
                     <td colspan="4"></td>

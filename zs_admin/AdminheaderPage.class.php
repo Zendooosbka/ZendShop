@@ -20,6 +20,9 @@
         // Константа страницы редактирования пользователей
         const ADM_EDITPAGE_USERS = 3;
 
+        // Константа другой страницы
+        const ADM_EDITPAGE_OTHER = 4;
+
         // Если ошибка то вернуть строку иначе нулл
         protected $error;
 
@@ -38,7 +41,7 @@
             parent::__construct($title);
             
             if ($this->session->isadmin() == false) {
-                // Когда дебаг прекратится убрать этот коммент header('Location: http://'.$ROOT_PATH.'/Index.php');
+                header('Location: http://'.$ROOT_PATH.'/Index.php');
             }
         }
         

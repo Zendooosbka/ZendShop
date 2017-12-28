@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-11-14 14:01:57
+/* Smarty version 3.1.30, created on 2017-12-28 10:50:36
   from "/var/www/html/zendshop/tpl/tpl/header.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_5a0acd253aed20_13687396',
+  'unifunc' => 'content_5a44a24c4effa4_73948769',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '24bee599c7778838374b2cc09ff558010a0370c8' => 
     array (
       0 => '/var/www/html/zendshop/tpl/tpl/header.tpl',
-      1 => 1510657310,
+      1 => 1514447401,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5a0acd253aed20_13687396 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5a44a24c4effa4_73948769 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,9 +58,9 @@ function content_5a0acd253aed20_13687396 (Smarty_Internal_Template $_smarty_tpl)
                             </ul>
                         </li>
                     </ul>
-                    <form class="navbar-form navbar-left" action="serarch.php" method="get">
+                    <form class="navbar-form navbar-left" action="search.php" method="get">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Введите текст запроса">                    
+                            <input type="text" class="form-control" placeholder="Введите текст запроса" size="50" name="q">
                         </div>
                         <button type="submit" class="btn btn-danger">Искать!</button>
                     </form>
@@ -76,9 +76,10 @@ function content_5a0acd253aed20_13687396 (Smarty_Internal_Template $_smarty_tpl)
  <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="account.php"><span class="glyphicon glyphicon-home"></span> Личный кабинет</a></li>
-                                <li><a href="about.php"><span class="glyphicon glyphicon-shopping-cart"></span> Корзина</a></li>
+                                <li><a href="cart.php"><span class="glyphicon glyphicon-shopping-cart"></span> Корзина</a></li>
                                 <?php if (($_smarty_tpl->tpl_vars['isuser']->value == true) && ($_smarty_tpl->tpl_vars['isadmin']->value == true)) {?>
                                     <li><a href="admineditscb.php"><span class="glyphicon glyphicon-ok"></span> Админ панель</a></li>
+                                    <li><a href="admin-logs.php"><span class="glyphicon glyphicon-ok"></span> Логи</a></li>
                                 <?php }?>
                                 <li><a href="about.php"><span class="glyphicon glyphicon-ok"></span> Заказы</a></li>
                                 <li><a href="LogoutQuery.php"><span class="glyphicon glyphicon-share"></span> Выйти</a></li>

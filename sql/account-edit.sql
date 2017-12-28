@@ -108,6 +108,19 @@ END;
 
 //
 
+-- Проверка принадлежности завода к компании
+CREATE OR REPLACE FUNCTION AccountCheckStockInCompany(Stockid INT, __Companyid INT)
+	RETURNS INTEGER
+BEGIN
+	IF EXISTS(SELECT * FROM Storage WHERE Stockid = StorageId AND __Companyid = CompanyId) THEN
+		RETURN 0;
+	ELSE
+		RETURN -1;
+	END IF;
+END;
+
+//
+
 -- Создание запроса на добавление компании в систему
 CREATE OR REPLACE PROCEDURE AccountCreateTicketForCompany(NewUserId INT, NewCompanyName VARCHAR(50), NewAddress VARCHAR(50), NewINN VARCHAR(15), NewDescription TEXT)
 BEGIN
@@ -123,6 +136,23 @@ BEGIN
 END;
 
 //
+
+-- Удаляет склад
+CREATE OR REPLACE PROCEDURE AccountDeleteStockFromCompany(StockId INT)
+BEGIN
+	DELETE FROM Storage WHERE StockId = StorageId;
+END;
+
+//
+
+-- Удаляет пользователя из компании
+CREATE OR REPLACE PROCEDURE AccountDeletePeopleFromCompany(__UserId INT)
+BEGIN
+	DELETE FROM PeopleInCompany WHERE UserId = __UserId;
+END;
+
+//
+
 
 -- Добовляет юзвера в компанию
 CREATE OR REPLACE PROCEDURE AccountAddUserInCompany(NewUserId INT, NewCompId INT, NewLevel INT)

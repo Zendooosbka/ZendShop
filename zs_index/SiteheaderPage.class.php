@@ -63,7 +63,17 @@
         
         
         /* Процедуры */
-        
+
+        // Проверка принадлежит ли юзер компании AccountCheckUserInCompany
+        protected function CheckUserCompany()
+        {
+            $this->query = $this->database->prepare("SELECT AccountCheckUserInCompany(:new)");
+            $this->query->bindParam(":new", $this->session->GetUser());
+            $this->query->execute();
+            return $this->query->fetch()[0];
+        }
+
+
         public function MakeSectionsMenu() {
             $this->query = $this->database->prepare("SELECT id, Name FROM AdminSectionTable", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
             $this->query->execute();

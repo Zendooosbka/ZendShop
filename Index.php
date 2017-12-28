@@ -3,9 +3,8 @@
     ini_set('display_errors', 1);  
     ini_set('display_startup_errors', 1);
 
-    require_once 'zs_index/SiteheaderPage.class.php';
+    require_once 'zs_index/IndexPage.class.php';
 
-    $h = new SiteHeader("Начальная страница");
-    $h->Draw("Другой текст");
-    $h->PrintClass();
+    $h = new IndexPage();
+    $h->Draw();
 ?>

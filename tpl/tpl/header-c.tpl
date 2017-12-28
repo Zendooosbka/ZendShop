@@ -1,2 +1,2 @@
-<li><a href="shearch.php?section={$id}">{$name}</a></li>
+<li><a href="search.php?section={$id}">{$name}</a></li>
     

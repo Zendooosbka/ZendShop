@@ -42,5 +42,24 @@
             $this->query->execute();
             return $this->query->fetch()[0];
         }
+
+        // Проверка принадлежит ли юзер компании
+        public function CheckUserIdInCompany($userid)
+        {
+            $this->query = $this->database->prepare("SELECT AccountCheckUserInCompany(:new)");
+            $this->query->bindParam(":new", $userid);
+            $this->query->execute();
+            return $this->query->fetch()[0];
+        }
+
+        // Проверка принадлежит ли склад компании
+        public function CheckStockInComany($stockid, $compid)
+        {
+            $this->query = $this->database->prepare("SELECT AccountCheckStockInCompany(:stockid, :compid)");
+            $this->query->bindParam(":stockid", $stockid);
+            $this->query->bindParam(":compid", $compid);
+            $this->query->execute();
+            return $this->query->fetch()[0];
+        }
     }
 ?>

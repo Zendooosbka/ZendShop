@@ -15,3 +15,6 @@ CREATE OR REPLACE VIEW AccoutGetStock AS SELECT StorageId AS id, CompanyId, Stor
 
 -- Получает всех кто работет в компании
 CREATE OR REPLACE VIEW AccoutGetCompanyWorkers AS SELECT PI.CompanyId, PI.UserID AS id, U.Name, U.SurName, PI.Level FROM PeopleInCompany AS PI INNER JOIN Users AS U ON U.UserId = PI.UserID;
+
+-- Поиск товаров компаниями
+CREATE OR REPLACE VIEW CompanyGoodsSearch AS SELECT P.ProductId AS id, P.ProductName AS Name, B.BrandName, C.CategoryName FROM Products AS P INNER JOIN Brands AS B ON P.BrandId = B.BrandId INNER JOIN Categories AS C ON C.CategoryId = P.CategoryId;

@@ -87,6 +87,8 @@
 
             // Тут несовсем ясно что делать с хттп
             $this->invitelink = 'http://'.$ROOT_PATH.'/inv.php?i='.$this->company.'&p='.$md5pass;
+
+            //echo "PrepareInviteLink() <br>";
         }
 
         // Подготовка таблицы работников
@@ -101,10 +103,12 @@
                 $this->smarty->assign('userid', $this->result[1]);
                 $this->smarty->assign('name', $this->result[2]);
                 $this->smarty->assign('fname', $this->result[3]);
-                $this->smarty->assign('level', ($this->result[4] > 0 ? "Работник" : "Создател"));
+                $this->smarty->assign('level', ($this->result[4] > 0 ? "Работник" : "   Создател"));
 
                 $this->memberstable .= $this->smarty->fetch("account-members-table.tpl");
             }
+
+            //echo "PrepareMembersTable() <br>";
         }
 
         // Подготовка таблиц складов
@@ -115,7 +119,7 @@
             $this->query->execute();
 
             while ($this->result = $this->query->fetch(PDO::FETCH_NUM, PDO::FETCH_ORI_NEXT)) {
-                //$this->smarty->assign('stockid', $this->result[0]);
+                $this->smarty->assign('stockid', $this->result[0]);
                 //$this->smarty->assign('companyid', $this->result[1]);
                 $this->smarty->assign('name', $this->result[2]);
                 $this->smarty->assign('address', $this->result[3]);
@@ -124,21 +128,14 @@
 
                 $this->stocktable .= $this->smarty->fetch("account-stocks-table.tpl");
             }
+
+            //echo "PrepareStockTable() <br>";
         }
 
         // Проверк на существование билета у пользователя
         private function CheckTickerts()
         {
             $this->query = $this->database->prepare("SELECT AccountCheckTicket(:new)");
-            $this->query->bindParam(":new", $this->session->GetUser());
-            $this->query->execute();
-            return $this->query->fetch()[0];
-        }
-
-        // Проверка принадлежит ли юзер компании AccountCheckUserInCompany
-        private function CheckUserCompany()
-        {
-            $this->query = $this->database->prepare("SELECT AccountCheckUserInCompany(:new)");
             $this->query->bindParam(":new", $this->session->GetUser());
             $this->query->execute();
             return $this->query->fetch()[0];
@@ -165,6 +162,8 @@
             $this->userphonenumber = $res[4];
             $this->useremail = $res[5];
 
+            //echo "MakeAccountInformation() <br>";
+
         }
 
         // Готовит информацию о заявке
@@ -183,6 +182,8 @@
                 $this->addrcompany = $res[2];
                 $this->inncompany = $res[3];
                 $this->descriptioncompany = $res[4];
+
+                //echo "MakeTicketInformation() <br>";
             }
         }
 
@@ -203,6 +204,8 @@
                 $this->descriptioncompany = $res[4];
                 $this->ownername = $res[5];
                 $this->ownersurname = $res[6];
+
+                //echo "MakeCompanyInformation() <br>";
             }
         }
 

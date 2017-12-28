@@ -179,6 +179,17 @@ CREATE TABLE IF NOT EXISTS ProductAttributes (
 	FOREIGN KEY (ProductId) REFERENCES Products(ProductId) ON DELETE CASCADE
 ) ENGINE = InnoDB   CHARACTER SET = UTF8;
 
+-- Таблица корзина
+DROP TABLE IF EXISTS Cart;
+CREATE TABLE IF NOT EXISTS Cart (
+	CartId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	UserId INT NOT NULL,
+	ShowwindowProductId INT NOT NULL,
+	FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE,
+	FOREIGN KEY (ShowwindowProductId) REFERENCES ShowwindowProducts(ShowwindowProductsId) ON DELETE CASCADE,
+	UNIQUE(UserId, ShowwindowProductId)
+) ENGINE = InnoDB   CHARACTER SET = UTF8;
+
 -- Создание таблицы "Отзывы"
 DROP TABLE IF EXISTS Reviews;
 CREATE TABLE IF NOT EXISTS Reviews (

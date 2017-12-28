@@ -28,9 +28,9 @@
                             </ul>
                         </li>
                     </ul>
-                    <form class="navbar-form navbar-left" action="serarch.php" method="get">
+                    <form class="navbar-form navbar-left" action="search.php" method="get">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Введите текст запроса">                    
+                            <input type="text" class="form-control" placeholder="Введите текст запроса" size="50" name="q">
                         </div>
                         <button type="submit" class="btn btn-danger">Искать!</button>
                     </form>
@@ -44,9 +44,10 @@
                         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{$name} {$surname} <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="account.php"><span class="glyphicon glyphicon-home"></span> Личный кабинет</a></li>
-                                <li><a href="about.php"><span class="glyphicon glyphicon-shopping-cart"></span> Корзина</a></li>
+                                <li><a href="cart.php"><span class="glyphicon glyphicon-shopping-cart"></span> Корзина</a></li>
                                 {if ($isuser == true) && ($isadmin == true) }
                                     <li><a href="admineditscb.php"><span class="glyphicon glyphicon-ok"></span> Админ панель</a></li>
+                                    <li><a href="admin-logs.php"><span class="glyphicon glyphicon-ok"></span> Логи</a></li>
                                 {/if}
                                 <li><a href="about.php"><span class="glyphicon glyphicon-ok"></span> Заказы</a></li>
                                 <li><a href="LogoutQuery.php"><span class="glyphicon glyphicon-share"></span> Выйти</a></li>

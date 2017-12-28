@@ -124,3 +124,80 @@
             $this->coord_y = $coord_y;
         }
     }
+
+    // Удяляет сток
+    class DeleteStock extends NoAdminEdit {
+        private $stockid;
+
+        private $company;
+
+        public function Make()
+        {
+            global $ROOT_PATH;
+            if ($this->session->isUser() && ($this->company > 0))
+            {
+                if ($this->CheckStockInComany($this->stockid,$this->company) == 0)
+                {
+                    $this->query = $this->database->prepare("CALL AccountDeleteStockFromCompany(:compid)");
+
+                    $this->query->bindParam(":compid", $this->stockid);
+
+                    $this->query->execute();
+                    header('Location: http://' . $ROOT_PATH . '/account.php?good=Склад удален');
+                } else {
+                    header('Location: http://'.$ROOT_PATH.'/Index.php');
+                }
+            } else {
+                header('Location: http://'.$ROOT_PATH.'/Index.php');
+            }
+        }
+
+        // В параметрах передается тот кого надо уволить!!!!1112
+        public function __construct($stockid)
+        {
+            parent::__construct();
+
+            $this->stockid = $stockid;
+            $this->company = $this->CheckUserCompany();
+        }
+    }
+
+    // Увольняет человека из компании
+    class DeletePersonFormCompany extends NoAdminEdit {
+
+        // Тот кого надо увилить
+        private $userid;
+
+        private $company;
+
+        // Компания в которой нахдится пользователь
+        private $usercompany;
+
+        public function Make()
+        {
+            global $ROOT_PATH;
+            if ($this->session->isUser() && ($this->company > 0))
+            {
+                if ($this->company == $this->usercompany)
+                {
+                    $this->query = $this->database->prepare("CALL AccountDeleteStockFromCompany(:compid)");
+                    $this->query->bindParam(":compid", $this->stockid);
+                    $this->query->execute();
+                } else {
+                    header('Location: http://'.$ROOT_PATH.'/Index.php');
+                }
+            } else {
+                header('Location: http://'.$ROOT_PATH.'/Index.php');
+            }
+        }
+
+        // В параметрах передается тот кого надо уволить!!!!1112
+        public function __construct($userid)
+        {
+            parent::__construct();
+
+            $this->userid = $userid;
+            $this->company = $this->CheckUserCompany();
+            $this->usercompany = $this->CheckUserIdInCompany($this->userid);
+        }
+    }
